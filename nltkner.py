@@ -1,16 +1,18 @@
 import nltk
 import numpy
-with open('41635-0.txt', encoding='utf-8') as f:
+from collections import Counter
+with open('narrative', encoding='utf-8') as f:  # ideally we will not hard-code the filename...
     sample = f.read()
 
 
 sentences = nltk.sent_tokenize(sample)
 tokenized_sentences = [nltk.word_tokenize(sentence) for sentence in sentences]
 tagged_sentences = [nltk.pos_tag(sentence) for sentence in tokenized_sentences]
-chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=True)
+chunked_sentences = nltk.ne_chunk_sents(tagged_sentences, binary=True)  # this is a generator!
+#print(chunked_sentences)
 
-def extract_entity_names(t):
-    entity_names = []
+def extract_entity_names(t): 
+    entity_names =[]
 
     if hasattr(t, 'label') and t.label:
         if t.label() == 'NE':
@@ -32,4 +34,5 @@ for tree in chunked_sentences:
 #print entity_names
 
 # Print unique entity names
-print(set(entity_names))
+print(Counter(entity_names))
+#print(count_entity)
